@@ -34,3 +34,66 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+Next.js API & Webhook Implementation
+
+Overview:
+
+This project implements a user management API and a secure webhook endpoint using Next.js, Prisma, SQLite, and JWT authentication. Additionally, a login system is included for user authentication.
+
+Features:
+
+Task 1: API Development & Authentication
+
+GET /api/users - Fetch all users.
+
+POST /api/users - Add a new user (name, email, password fields, hashed password storage).
+
+GET /api/users/:id - Fetch a user by ID.
+
+Authentication: JWT authentication for secured API routes.
+
+Database: Prisma + SQLite for user management.
+
+Login System: Implemented at app/auth/login/routes.ts with email and password authentication.
+
+Task 2: Webhook Implementation
+
+POST /api/webhook - Processes webhook requests.
+
+Signature Validation - Uses HMAC SHA-256 to verify request authenticity.
+
+Data Storage - Stores received events in db.json.
+
+Response: { "success": true, "message": "Received" }.
+
+API Usage
+
+1️⃣ Register a User
+
+POST /api/users
+{
+"name": "John Doe",
+"email": "john@example.com",
+"password": "securepassword"
+}
+
+2️⃣ Login (Get Token)
+POST /api/auth/login
+{
+"password": "123456",
+"email": "sakib@gmail.com"
+}
+
+3️⃣ Fetch Users (Protected Route)
+GET /api/users
+Authorization: jwt_token
+
+4️⃣ Fetch Single User By ID (Protected Route)
+GET /api/users/id
+Authorization: jwt_token
+
+4️⃣ Webhook Endpoint
+POST /api/webhook
+Headers: { "x-signature": "hmac_signature" }
+Body: { "eventType": "order_created", "data": { ... } }
