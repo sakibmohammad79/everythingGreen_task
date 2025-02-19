@@ -1,31 +1,27 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import jwt, { Secret } from "jsonwebtoken";
-import { NextApiRequest, NextApiResponse } from "next";
-
-const generateToken = (user: any) => {
+import { NextResponse } from "next/server";
+// Generate JWT Token
+export const generateToken = (user: any) => {
   return jwt.sign({ userId: user.id }, process.env.JWT_SECRET as Secret, {
     expiresIn: "7 days",
   });
 };
 
-const verifyToken = (
-  req: NextApiRequest & { user?: any },
-  res: NextApiResponse,
-  next: () => void
-) => {
-  const token = req.headers.authorization?.split(" ")[1];
-  if (!token) {
-    return res.status(401).json({ message: "You are not authorized!" });
-  }
-
+// Verify JWT Token
+export const verifyToken = (token: string) => {
   try {
+    if (!token) {
+      return NextResponse.json(
+        { message: "Unauthorized: Invalid token" },
+        { status: 401 }
+      );
+    }
+
     const decoded = jwt.verify(token, process.env.JWT_SECRET as Secret);
-    req.user = decoded;
-    next();
+    return decoded; // Return decoded user info
   } catch (error) {
-    console.log(error);
-    return res.status(401).json({ message: "Invalid token" });
+    console.error("Invalid token:", error);
+    return null; // Return null if verification fails
   }
 };
-
-export { generateToken, verifyToken };
