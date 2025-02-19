@@ -1,0 +1,11 @@
+[
+  {
+    "eventType": "user_created",
+    "data": {
+      "id": "123",
+      "name": "Sakib",
+      "email": "sakib@gmail.com"
+    },
+    "timestamp": "2025-02-19T17:55:03.266Z"
+  }
+]
